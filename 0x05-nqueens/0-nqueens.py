@@ -2,9 +2,12 @@
 import sys
 
 def print_solution(solution):
-    for row, col in solution:
-        print("[{}, {}]".format(row, col), end=' ')
-    print()
+    print("[", end="")
+    for i, (row, col) in enumerate(solution):
+        if i != 0:
+            print(", ", end="")
+        print("[{}, {}]".format(row, col), end="")
+    print("]")
 
 def is_safe(solution, row, col):
     for queen in solution:
@@ -19,17 +22,17 @@ def solve_n_queens_util(n, col, solution):
 
     for row in range(n):
         if is_safe(solution, row, col):
-            solution.append([row, col])
+            solution.append((row, col))
             solve_n_queens_util(n, col + 1, solution)
             solution.pop()
 
 def solve_n_queens(n):
     if not isinstance(n, int):
-        print("N must be a number")
+        print("N must be a number", file=sys.stderr)
         sys.exit(1)
 
     if n < 4:
-        print("N must be at least 4")
+        print("N must be at least 4", file=sys.stderr)
         sys.exit(1)
 
     solution = []
@@ -37,12 +40,13 @@ def solve_n_queens(n):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: {} N".format(sys.argv[0]))
+        print("Usage: {} N".format(sys.argv[0]), file=sys.stderr)
         sys.exit(1)
 
     try:
         N = int(sys.argv[1])
         solve_n_queens(N)
     except ValueError:
-        print("N must be a number")
+        print("N must be a number", file=sys.stderr)
         sys.exit(1)
+
